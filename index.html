@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <title>微信分享测试</title>
+    <!-- 微信官方 JSSDK -->
+    <script src="https://res.wx.qq.com/open/js/jweixin-1.6.0.js"></script>
+</head>
+<body>
+    <h1>测试页面</h1>
+
+    <script>
+    var myconfig = {
+        "appId": "wx22dfc48d7b1a409c",
+        "nonceStr": "uAl48g6vc2",
+        "timestamp": 1774846769,
+        "url": "https://baidu.com",
+        "signature": "c3c736749bb3b0ec4326842084c234a99bc5154f"
+    };
+
+    wx.config({
+        debug: false,
+        appId: myconfig.appId,
+        timestamp: myconfig.timestamp,
+        nonceStr: myconfig.nonceStr,
+        signature: myconfig.signature,
+        jsApiList: [
+            "updateAppMessageShareData",
+            "updateTimelineShareData"
+        ]
+    });
+
+    wx.ready(function () {
+        wx.updateAppMessageShareData({
+            title: "怒江职业技术学院官方通知",
+            desc: "校园通知·成绩查询·缴费入口",
+            link: "https://njzj.nujiang.cn",
+            imgUrl: "https://njzj.nujiang.cn/tpl/img/share.png",
+            success: function () {}
+        });
+    });
+    </script>
+</body>
+</html>
